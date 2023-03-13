@@ -48,14 +48,14 @@ class BoxTest {
     }
 
     @Test
-    void AreaNull() {
+    void areaNull() {
         Box box = new Box(1, 1);
         double x = box.getArea();
         assertThat(x).isEqualTo(0);
     }
 
     @Test
-    void AreaSix() {
+    void areaSix() {
         Box box = new Box(8, 1);
         double x = box.getArea();
         assertThat(x).isEqualTo(6);
