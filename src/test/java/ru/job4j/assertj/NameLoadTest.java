@@ -13,7 +13,7 @@ class NameLoadTest {
     }
 
     @Test
-    void checkMessageArrayIsEmpty(){
+    void checkMessageArrayIsEmpty() {
         NameLoad nameLoad = new NameLoad();
         assertThatThrownBy(nameLoad::parse)
                 .isInstanceOf(IllegalArgumentException.class)
