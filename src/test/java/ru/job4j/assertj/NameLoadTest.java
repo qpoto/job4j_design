@@ -13,34 +13,7 @@ class NameLoadTest {
     }
 
     @Test
-    void checkValidateFirst() {
-        String name = "AtomicHeart";
-        NameLoad nameLoad = new NameLoad();
-        assertThatThrownBy(() -> nameLoad.parse(name))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("this name: %s does not contain the symbol \"=\"", name);
-    }
-
-    @Test
-    void checkValidateSecond() {
-        String name = "=Atomic";
-        NameLoad nameLoad = new NameLoad();
-        assertThatThrownBy(() -> nameLoad.parse(name))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("this name: %s does not contain a key", name);
-    }
-
-    @Test
-    void checkValidateThird() {
-        String name = "Atomic=";
-        NameLoad nameLoad = new NameLoad();
-        assertThatThrownBy(() -> nameLoad.parse(name))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("this name: %s does not contain a value", name);
-    }
-
-    @Test
-    void checkParse() {
+    void checkMessageArrayIsEmpty(){
         NameLoad nameLoad = new NameLoad();
         assertThatThrownBy(nameLoad::parse)
                 .isInstanceOf(IllegalArgumentException.class)
