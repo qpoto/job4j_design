@@ -19,4 +19,20 @@ class NameLoadTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Names array is empty");
     }
+
+    @Test
+    void checkHasNotSymbolEqual() {
+        NameLoad nameLoad = new NameLoad();
+        assertThatThrownBy(() -> nameLoad.parse("Byby"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("does not contain the symbol");
+    }
+
+    @Test
+    void checkHasNotKey() {
+        NameLoad nameLoad = new NameLoad();
+        assertThatThrownBy(() -> nameLoad.parse("="))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("does not contain a key");
+    }
 }
