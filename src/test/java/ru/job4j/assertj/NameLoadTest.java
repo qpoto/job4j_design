@@ -35,4 +35,12 @@ class NameLoadTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("does not contain a key");
     }
+
+    @Test
+    void checkNotValue() {
+        NameLoad nameLoad = new NameLoad();
+        assertThatThrownBy(() -> nameLoad.parse("K="))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("this name: K= does not contain a value");
+    }
 }
