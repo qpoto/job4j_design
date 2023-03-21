@@ -9,7 +9,9 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public void add(T model) {
-        storage.put(model.getId(), model);
+        if (!storage.containsKey(model.getId())) {
+            storage.put(model.getId(), model);
+        }
     }
 
     @Override
@@ -26,7 +28,7 @@ public final class MemStore<T extends Base> implements Store<T> {
     public boolean delete(String id) {
         boolean delOk = false;
         T del = storage.remove(id);
-        if (del == null) {
+        if (del != null) {
             delOk = true;
         }
         return delOk;
