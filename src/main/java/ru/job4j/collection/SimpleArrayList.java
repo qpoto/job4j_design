@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class SimpleArrayList<T> implements SimpleList<T> {
+public class SimpleArrayList<T>  implements SimpleList<T> {
 
     private T[] container;
     private int size;
