@@ -11,21 +11,21 @@ public class ForwardLinked<T> implements Iterable<T> {
     private Node<T> head;
 
     public void add(T value) {
-        ForwardLinked.Node<T> serv = head;
+        Node<T> serv = head;
         if (size == 0) {
-            head = new ForwardLinked.Node<>(value, null);
+            head = new Node<>(value, null);
         } else {
             for (int i = 1; i < size; i++) {
                 serv = serv.next;
             }
-            serv.next = new ForwardLinked.Node<>(value, null);
+            serv.next = new Node<>(value, null);
         }
         size++;
         modCount++;    }
 
     public T get(int index) {
         Objects.checkIndex(index, size);
-        ForwardLinked.Node<T> service = head;
+        Node<T> service = head;
         for (int i = 0; i < index; i++) {
             service = service.next;
         }
@@ -46,7 +46,7 @@ public class ForwardLinked<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            ForwardLinked.Node<T> node = head;
+            Node<T> node = head;
             final int expectedModCount = modCount;
 
             @Override
