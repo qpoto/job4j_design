@@ -33,10 +33,14 @@ public class ForwardLinked<T> implements Iterable<T> {
         return service.item;    }
 
     public T deleteFirst() {
-        if (head != null) {
-            head = head.next;
+        if (size == 0) {
+            throw new NoSuchElementException();
         }
-        return iterator().next();
+        head = head.next;
+        return head.item;
+    }
+
+    public void addFirst(T value) {
     }
 
     @Override
