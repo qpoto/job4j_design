@@ -61,9 +61,9 @@ class ForwardLinkedTest {
         assertThat(list).containsExactly(1, 2);
         list.add(3);
         assertThat(list).containsExactly(1, 2, 3);
-        list.deleteFirst();
+        assertThat(list.deleteFirst()).isEqualTo(1);
         assertThat(list).containsExactly(2, 3);
-        list.deleteFirst();
+        assertThat(list.deleteFirst()).isEqualTo(2);
         assertThat(list).containsExactly(3);
     }
 
