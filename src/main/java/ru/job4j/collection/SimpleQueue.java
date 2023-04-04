@@ -9,16 +9,17 @@ public class SimpleQueue<T> {
     int countOut = 0;
 
     public T poll() {
-        if (countIn == 0) {
+        if (countIn == 0 && countOut == 0) {
             throw new NoSuchElementException("Queue is empty");
         }
-        if (countOut < 1) {
-            while (countIn > 0) {
+        if (countOut == 0) {
+            while (countIn != 0) {
                 out.push(in.pop());
                 countIn--;
                 countOut++;
             }
         }
+        countOut--;
         return out.pop();
     }
 
