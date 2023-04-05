@@ -22,13 +22,13 @@ public class RevertLinked<T> implements Iterable<T> {
     public boolean revert() {
         boolean reverted = false;
         if (head != null) {
-            Node<T> current = head.next; // явный промежуточный указатель на 2ой элемент коллекции
-            head.next = null; // разрыв связи между головой и 2ым элементом коллекции
-            while (current != null) { // до того момента, пока 2ой элемент коллекции будет существовать
-                Node<T> next = current.next; // 3ий элемент коллекцииЮ на который явно указывает 2ой
-                current.next = head; // разворачиваем ссылку от 2го элемента на 1ый (голову)
-                head = current; // голова перемещается на следующий элемент коллекции
-                current = next; // тут next получается "стирается", и при следующем проходе создается снова
+            Node<T> current = head.next;
+            head.next = null;
+            while (current != null) {
+                Node<T> next = current.next;
+                current.next = head;
+                head = current;
+                current = next;
             }
             reverted = current == null;
         }
