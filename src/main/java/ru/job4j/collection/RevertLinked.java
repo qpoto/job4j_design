@@ -28,7 +28,7 @@ public class RevertLinked<T> implements Iterable<T> {
                 Node<T> next = current.next; // 3ий элемент коллекцииЮ на который явно указывает 2ой
                 current.next = head; // разворачиваем ссылку от 2го элемента на 1ый (голову)
                 head = current; // голова перемещается на следующий элемент коллекции
-                current = next;// тут next получается "стирается", и при следующем проходе создается снова
+                current = next; // тут next получается "стирается", и при следующем проходе создается снова
             }
             reverted = current == null;
         }
