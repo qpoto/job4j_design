@@ -3,7 +3,7 @@ package ru.job4j.collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class RevertLinked<T> implements Iterable<T> {
+public class RevertLinked<T> implements Iterable<T>  {
     private Node<T> head;
 
     public void add(T value) {
