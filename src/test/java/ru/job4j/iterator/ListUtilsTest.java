@@ -36,7 +36,14 @@ class ListUtilsTest {
     @Test
     void whenRemoveIf3() {
         ListUtils.addAfter(input, 0, 2);
-        ListUtils.removeIf(input, integer -> integer == 3);
-        assertThat(input).containsSequence(1, 2);
+        ListUtils.removeIf(input, integer -> integer < 3);
+        assertThat(input).containsSequence(3).hasSize(1);
+    }
+
+    @Test
+    void whenAddToEnd() {
+        ListUtils.addAfter(input, 1, 5);
+        ListUtils.addAfter(input,0, 7);
+        assertThat(input).hasSize(4).containsSequence(1, 7, 3, 5);
     }
 }
