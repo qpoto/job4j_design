@@ -42,8 +42,30 @@ class ListUtilsTest {
 
     @Test
     void whenAddToEnd() {
-        ListUtils.addAfter(input, 1, 5);
-        ListUtils.addAfter(input,0, 7);
-        assertThat(input).hasSize(4).containsSequence(1, 7, 3, 5);
+        ListUtils.addAfter(input, 1, 4);
+        ListUtils.addAfter(input, 0, 2);
+        ListUtils.addAfter(input, 3, 5);
+        assertThat(input).hasSize(5).containsSequence(1, 2, 3, 4, 5);
+    }
+
+    @Test
+    void whenReplaceEven() {
+        ListUtils.addAfter(input, 1, 4);
+        ListUtils.addAfter(input, 0, 2);
+        ListUtils.addAfter(input, 3, 5);
+        ListUtils.replaceIf(input, i -> i % 2 == 0, 100);
+        assertThat(input).containsSequence(1, 100, 3, 100, 5);
+    }
+
+    @Test
+    void whenRemoveAll() {
+        List<Integer> toRemove = new ArrayList<>();
+        toRemove.add(1);
+        toRemove.add(3);
+        toRemove.add(4);
+        toRemove.add(5);
+        ListUtils.addAfter(input, 1, 4);
+        ListUtils.removeAll(input, toRemove);
+        assertThat(input).hasSize(0);
     }
 }
