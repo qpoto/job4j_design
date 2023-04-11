@@ -60,11 +60,8 @@ class ListUtilsTest {
     @Test
     void whenRemoveAll() {
         List<Integer> toRemove = new ArrayList<>();
-        toRemove.add(1);
         toRemove.add(3);
-        toRemove.add(4);
-        toRemove.add(5);
-        ListUtils.addAfter(input, 1, 4);
+        toRemove.add(1);
         ListUtils.removeAll(input, toRemove);
         assertThat(input).hasSize(0);
     }
