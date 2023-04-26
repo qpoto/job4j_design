@@ -51,11 +51,11 @@ public class SimpleMap<K, V> implements Map<K, V>  {
         }
     }
 
-    private int searchIndex (K key) {
+    private int searchIndex(K key) {
         return key == null ? 0 : indexFor(hash(key.hashCode()));
     }
 
-    private boolean check (K key) {
+    private boolean check(K key) {
         int index = searchIndex(key);
         return (table[index] != null && key == table[index].key)
                 || (key != null && table[index] != null && table[index].key != null
