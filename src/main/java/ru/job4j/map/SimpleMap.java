@@ -45,19 +45,28 @@ public class SimpleMap<K, V> implements Map<K, V>  {
         table = new MapEntry[capacity];
         for (MapEntry<K, V> pair : oldTable) {
             if (pair != null) {
-                int i = pair.key == null ? 0 : indexFor(hash(pair.key.hashCode()));
-                table[i] = new MapEntry<>(pair.key, pair.value);
+                int i = searchIndex(pair.key);
+                table[i] = pair;
             }
         }
     }
 
+    private int searchIndex (K key) {
+        return key == null ? 0 : indexFor(hash(key.hashCode()));
+    }
+
+    private boolean check (K key) {
+        int index = searchIndex(key);
+        return (table[index] != null && key == table[index].key)
+                || (key != null && table[index] != null && table[index].key != null
+                && key.hashCode() == table[index].key.hashCode());
+    }
+
     @Override
     public V get(K key) {
-        int index = key == null ? 0 : indexFor(hash(key.hashCode()));
+        int index = searchIndex(key);
         V rsl = null;
-        if ((table[index] != null && key == table[index].key)
-                || (key != null && table[index] != null && table[index].key != null
-                && key.hashCode() == table[index].key.hashCode())) {
+        if (check(key)) {
             rsl = table[index].value;
         }
         return rsl;
@@ -65,8 +74,8 @@ public class SimpleMap<K, V> implements Map<K, V>  {
 
     @Override
     public boolean remove(K key) {
-        int index = key == null ? 0 : indexFor(hash(key.hashCode()));
-        boolean rsl = get(key) != null;
+        int index = searchIndex(key);
+        boolean rsl = check(key);
         if (rsl)  {
             table[index] = null;
             count--;
