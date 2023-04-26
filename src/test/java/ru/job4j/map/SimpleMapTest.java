@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 import static org.assertj.core.api.Assertions.*;
 
-class SimpleMapTest {
+class SimpleMapTest  {
 
     private final SimpleMap<Integer, String> map = new SimpleMap<>();
 
