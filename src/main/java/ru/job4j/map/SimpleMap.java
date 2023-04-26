@@ -18,27 +18,21 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        boolean result = false;
-        int i;
-        if (capacity * LOAD_FACTOR >= count) {
+        if (count >= LOAD_FACTOR * capacity) {
             expand();
         }
-        if (key == null) {
-            i = 0;
-        } else {
-            i = indexFor(hash(key.hashCode()));
-        }
-        if (table[i] == null) {
-            table[i] = new MapEntry<>(key, value);
-            result = true;
+        int index = key == null ? 0 : indexFor(hash(key.hashCode()));
+        boolean rsl = table[index] == null;
+        if (rsl) {
+            table[index] = new MapEntry<>(key, value);
             count++;
             modCount++;
         }
-        return result;
+        return rsl;
     }
 
     private int hash(int hashCode) {
-        return hashCode % table.length;
+        return hashCode ^ (hashCode >>> 16);
     }
 
     private int indexFor(int hash) {
@@ -46,62 +40,44 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private void expand() {
-        capacity = capacity * 2;
-        MapEntry<K, V>[] doubleTable = new MapEntry[capacity];
-        for (int i = 0; i < table.length; i++) {
-            if (table[i] != null) {
-                if (table[i].key == null) {
-                    doubleTable[0] = table[i];
-                } else {
-                    int j = indexFor(hash(table[i].key.hashCode()));
-                    doubleTable[j] = table[i];
-                }
+        MapEntry<K, V>[] oldTable = table;
+        capacity *= 2;
+        table = new MapEntry[capacity];
+        for (MapEntry<K, V> pair : oldTable) {
+            if (pair != null) {
+                int i = pair.key == null ? 0 : indexFor(hash(pair.key.hashCode()));
+                table[i] = new MapEntry<>(pair.key, pair.value);
             }
         }
-        table = doubleTable;
     }
 
     @Override
     public V get(K key) {
-        V result = null;
-        if (key == null) {
-            if (table[0] != null && table[0].key == null) {
-                result = table[0].value;
-            }
-        } else {
-            int i = indexFor(hash(key.hashCode()));
-            if (table[i] != null && key.equals(table[i].key)) {
-                result = table[i].value;
-            }
+        int index = key == null ? 0 : indexFor(hash(key.hashCode()));
+        V rsl = null;
+        if ((table[index] != null && key == table[index].key)
+                || (key != null && table[index] != null && table[index].key != null
+                && key.hashCode() == table[index].key.hashCode())) {
+            rsl = table[index].value;
         }
-        return result;
+        return rsl;
     }
 
     @Override
     public boolean remove(K key) {
-        boolean result = false;
-        if (key == null) {
-            if (table[0] != null && table[0].key == null) {
-                table[0] = null;
-                result = true;
-                count--;
-                modCount++;
-            }
-        } else {
-            int i = indexFor(hash(key.hashCode()));
-            if (table[i] != null && table[i].key.equals(key)) {
-                table[i] = null;
-                result = true;
-                count--;
-                modCount++;
-            }
+        int index = key == null ? 0 : indexFor(hash(key.hashCode()));
+        boolean rsl = get(key) != null;
+        if (rsl)  {
+            table[index] = null;
+            count--;
+            modCount++;
         }
-        return result;
+        return rsl;
     }
 
     @Override
     public Iterator<K> iterator() {
-        return new Iterator<K>() {
+        return new Iterator<>() {
             private final int expectedModCount = modCount;
             private int index = 0;
 
@@ -110,10 +86,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                while (index < capacity - 1 && table[index] == null) {
+                while (index < capacity && table[index] == null) {
                     index++;
                 }
-                return table[index] != null;
+                return index < capacity;
             }
 
             @Override
