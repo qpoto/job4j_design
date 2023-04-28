@@ -11,8 +11,15 @@ public class EvenNumberFile {
             while ((read = in.read()) != -1) {
                 text.append((char) read);
             }
-            System.out.println(text);
-        } catch (IOException e) {
+            String[] lines = text.toString().split(System.lineSeparator());
+            for (String line : lines) {
+                int lineInt = Integer.parseInt(line);
+                if (lineInt % 2 == 0) {
+                    System.out.println(line + " четное число");
+                } else {
+                    System.out.println(line + " нечетное число");
+                }
+            }        } catch (IOException e) {
             e.printStackTrace();
         }
     }
