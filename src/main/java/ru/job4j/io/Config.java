@@ -28,11 +28,19 @@ public class Config {
     }
 
     private static boolean lineFilter(String line) {
-        if (!line.startsWith("//") && !line.equals("")) {
-            return true;
-        } else {
-            throw new IllegalArgumentException("Line not good, mr(s) User");
+        if (line.startsWith("//")) {
+            throw new IllegalArgumentException("Line cannot start //");
         }
+        if (line.startsWith("=")) {
+            throw new IllegalArgumentException("Line must have key");
+        }
+        if (line.indexOf("=") == line.length() - 1) {
+            throw new IllegalArgumentException("Line must have value");
+        }
+        if (line.indexOf("=") == 0) {
+            throw new IllegalArgumentException("Line must have key and value");
+        }
+        return true;
     }
 
     public String value(String key) {
