@@ -1,6 +1,7 @@
 package ru.job4j.io;
 
 import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.*;
 
 class ConfigTest {
@@ -11,15 +12,6 @@ class ConfigTest {
         Config config = new Config(path);
         config.load();
         assertThat(config.value("name")).isEqualTo("Petr Arsentev");
-    }
-
-    @Test
-    void whenPairWithComment() {
-        String path = "./data/error3.properties";
-        Config config = new Config(path);
-        assertThatThrownBy(config::load)
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Line cannot start //");
     }
 
     @Test
@@ -38,5 +30,15 @@ class ConfigTest {
         assertThatThrownBy(config::load)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Line must have key");
+    }
+
+    @Test
+    void key3ContainValue4() {
+        String path = "./data/error3.properties";
+        Config config = new Config(path);
+        config.load();
+        String expected = "4";
+        String rsl = config.value("3");
+        assertThat(rsl).isEqualTo(expected);
     }
 }

@@ -16,7 +16,7 @@ public class Config {
 
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
-            read.lines().filter(line -> line.contains("=")).filter(Config::lineFilter).forEach(line -> {
+            read.lines().filter(line -> line.contains("=") && !line.startsWith("#")).filter(Config::lineFilter).forEach(line -> {
                     String[] keyValue = line.split("=", 2);
                     String key = keyValue[0];
                     String value = keyValue[1];
@@ -28,17 +28,11 @@ public class Config {
     }
 
     private static boolean lineFilter(String line) {
-        if (line.startsWith("//")) {
-            throw new IllegalArgumentException("Line cannot start //");
-        }
         if (line.startsWith("=")) {
             throw new IllegalArgumentException("Line must have key");
         }
         if (line.indexOf("=") == line.length() - 1) {
             throw new IllegalArgumentException("Line must have value");
-        }
-        if (line.indexOf("=") == 0) {
-            throw new IllegalArgumentException("Line must have key and value");
         }
         return true;
     }
@@ -59,8 +53,9 @@ public class Config {
     }
 
     public static void main(String[] args) {
-        Config c = new Config("data/app.properties");
-        c.load();
-        System.out.println(c.values.size());
+        String path = "./data/error3.properties";
+        Config config = new Config(path);
+        config.load();
+        System.out.println(config.values);
     }
 }
