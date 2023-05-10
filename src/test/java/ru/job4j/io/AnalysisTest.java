@@ -28,7 +28,7 @@ class AnalysisTest {
         try (BufferedReader in = new BufferedReader(new FileReader(target))) {
             in.lines().forEach(rsl::append);
         }
-        String exp = ("10:56:01;10:59:01;");
+        String exp = "10:56:01;10:59:01;";
         assertThat(exp).isEqualTo(rsl.toString());
     }
 }
