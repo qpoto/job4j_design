@@ -1,6 +1,5 @@
 package ru.job4j.io;
 
-import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -8,33 +7,21 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class SearchFiles extends SimpleFileVisitor<Path> {
-    Predicate<Path> condition;
+    private Predicate<Path> condition;
+    private List<Path> listOfPath = new ArrayList<>();
     public SearchFiles(Predicate<Path> condition) {
         this.condition = condition;
     }
 
-    public Predicate<Path> getCondition() {
-        return condition;
-    }
-
-    public void setCondition(Predicate<Path> condition) {
-        this.condition = condition;
-    }
-
     @Override
-    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        List<String> lines = Files.readAllLines(file);
-        for (String s: lines) {
-            if (s.contains("fk")) {
-                System.out.println(file.toAbsolutePath());
-                break;
-            }
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+        if (condition.test(file)) {
+            listOfPath.add(file);
         }
-
         return FileVisitResult.CONTINUE;
     }
 
     public List<Path> getPaths() {
-        return new ArrayList<>();
+        return this.listOfPath;
     }
 }
