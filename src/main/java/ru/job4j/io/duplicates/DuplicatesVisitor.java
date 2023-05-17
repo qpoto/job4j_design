@@ -16,7 +16,6 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
             fPs.put(fileProperty, new ArrayList<>());
         }
         fPs.get(fileProperty).add(file);
-        printPath();
         return super.visitFile(file, attrs);
     }
 
