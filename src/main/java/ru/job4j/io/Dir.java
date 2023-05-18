@@ -4,19 +4,22 @@ import java.io.File;
 
 public class Dir {
     public static void main(String[] args) {
-        File file = new File("c:\\projects");
-        if (!file.exists()) {
-            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
-        }
-        if (!file.isDirectory()) {
-            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
-        }
-        System.out.println(String.format("size : %s", file.getTotalSpace()));
+        File file = new File(args[0]);
+        System.out.printf("size: %s%n", file.getTotalSpace());
         for (File subfile : file.listFiles()) {
-            System.out.println(String.format("File name: %s %sFile size: %s",
-                    subfile.getName(),
-                    System.lineSeparator(),
-                    subfile.length()));
+            if (validateProgArgs(args)) {
+                System.out.println(subfile.getName());
+            }
         }
+    }
+
+    public static boolean validateProgArgs(String[] myArgs) {
+        if (myArgs[0] == null) {
+            throw new IllegalArgumentException("Root folder is null. Usage  ROOT_FOLDER.");
+        }
+        if (!myArgs[1].contains(".txt")) {
+            throw new IllegalArgumentException("File extension not specified");
+        }
+        return true;
     }
 }
