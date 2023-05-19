@@ -1,5 +1,6 @@
 package ru.job4j.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,18 +10,19 @@ import java.util.function.Predicate;
 
 public class Search {
 
-    public static boolean validateProgArgs(String[] myArgs) {
-        if (myArgs[0] == null) {
-            throw new IllegalArgumentException("Root folder is null. Usage  ROOT_FOLDER.");
-        }
-        if (!myArgs[1].equals("123")) {
-            throw new IllegalArgumentException("File extension not specified");
+    private static void validateProgArgs(String[] myArgs) {
+        File dir = new File(myArgs[0]);
+        if (myArgs.length != 2) {
+            throw new IllegalArgumentException("2 arguments must be passed to the program");
         }
 
-        if (!myArgs[2].contains(".txt")) {
+        if (!dir.isDirectory()) {
+            throw new IllegalArgumentException("Is not a directory");
+        }
+
+        if (!myArgs[1].startsWith(".") && myArgs[1].length() <= 1) {
             throw new IllegalArgumentException("File extension not specified");
         }
-        return true;
     }
 
     public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {
@@ -30,12 +32,11 @@ public class Search {
     }
 
     public static void main(String[] args) throws IOException {
-        if (validateProgArgs(args)) {
-            Path start = Paths.get(args[0]);
-            search(start, p -> p.toFile()
-                    .getName()
-                    .endsWith(args[1]))
-                    .forEach(System.out::println);
-        }
+        validateProgArgs(args);
+        Path start = Paths.get(args[0]);
+        search(start, p -> p.toFile()
+                .getName()
+                .endsWith(args[1]))
+                .forEach(System.out::println);
     }
 }
