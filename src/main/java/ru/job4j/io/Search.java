@@ -11,15 +11,13 @@ import java.util.function.Predicate;
 public class Search  {
 
     private static void validateProgArgs(String[] myArgs) {
-        File dir = new File(myArgs[0]);
         if (myArgs.length != 2) {
             throw new IllegalArgumentException("2 arguments must be passed to the program");
         }
-
+        File dir = new File(myArgs[0]);
         if (!dir.isDirectory()) {
             throw new IllegalArgumentException("Is not a directory");
         }
-
         if (!myArgs[1].startsWith(".") && myArgs[1].length() <= 1) {
             throw new IllegalArgumentException("File extension not specified");
         }
