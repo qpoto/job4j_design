@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class Search {
+public class Search  {
 
     private static void validateProgArgs(String[] myArgs) {
         File dir = new File(myArgs[0]);
