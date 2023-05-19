@@ -1,12 +1,15 @@
 package ru.job4j.io;
 
+import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class SearchFiles extends SimpleFileVisitor<Path> {
+import static java.nio.file.FileVisitResult.CONTINUE;
+
+public class SearchFiles implements FileVisitor<Path> {
     private Predicate<Path> condition;
     private List<Path> listOfPath = new ArrayList<>();
     public SearchFiles(Predicate<Path> condition) {
@@ -14,14 +17,29 @@ public class SearchFiles extends SimpleFileVisitor<Path> {
     }
 
     @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+        return CONTINUE;
+    }
+
+    @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         if (condition.test(file)) {
             listOfPath.add(file);
         }
-        return FileVisitResult.CONTINUE;
+        return CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+        return CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+        return CONTINUE;
     }
 
     public List<Path> getPaths() {
-        return this.listOfPath;
+        return listOfPath;
     }
 }
