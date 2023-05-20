@@ -16,21 +16,10 @@ public class ArgsName {
 
     private void parse(String[] args) {
         for (String arg : args) {
-            if (!arg.contains("=")) {
-                throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain an equal sign", arg));
-            }
+            chekArgs(arg);
             String[] keyValue = arg.split("=", 2);
-            if (!keyValue[0].startsWith("-")) {
-                throw new IllegalArgumentException(String.format("Error: This argument '%s' does not start with a '-' character", arg));
-            }
             String[] forKey = keyValue[0].split("-", 2);
-            if (forKey[1].length() == 0) {
-                throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain a key", arg));
-            }
             String key = forKey[1];
-            if (keyValue[1].length() == 0) {
-                throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain a value", arg));
-            }
             String value = keyValue[1];
             values.put(key, value);
         }
@@ -43,6 +32,21 @@ public class ArgsName {
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;
+    }
+
+    private static void chekArgs(String arg) {
+        if (!arg.startsWith("-")) {
+            throw new IllegalArgumentException(String.format("Error: This argument '%s' does not start with a '-' character", arg));
+        }
+        if (arg.startsWith("-=")) {
+            throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain a key", arg));
+        }
+        if (!arg.contains("=")) {
+            throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain an equal sign", arg));
+        }
+        if (arg.indexOf("=") == arg.length() - 1) {
+            throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain a value", arg));
+        }
     }
 
     public static void main(String[] args) {
