@@ -4,9 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -19,7 +17,7 @@ public class Zip {
         if (!args.get("e").startsWith(".")) {
             throw new IllegalArgumentException("Excluded extensions must start with \".\"");
         }
-        if (!args.get("o").contains(".zip")) {
+        if (!args.get("o").endsWith(".zip")) {
             throw new IllegalArgumentException("The archive must have the \".zip\" extension");
         }
         System.out.println("The input arguments are valid.");
@@ -44,7 +42,7 @@ public class Zip {
         }
         ArgsName argsName = ArgsName.of(args);
         validate(argsName);
-        List<Path> pathList = Search.search(Paths.get(argsName.get("d")), p -> !p.toString().contains(argsName.get("e")));
+        List<Path> pathList = Search.search(Paths.get(argsName.get("d")), p -> !p.toString().endsWith(argsName.get("e")));
         System.out.println("The list of files has been received");
         Zip zip = new Zip();
         zip.packFiles(pathList, new File(argsName.get("o")));
