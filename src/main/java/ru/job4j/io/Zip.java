@@ -12,16 +12,17 @@ import java.util.zip.ZipOutputStream;
 
 public class Zip {
 
-    private static void validate(List<String> args) {
-        if (args.size() != 3) {
-            throw new IllegalArgumentException("Set all arguments");
+    private static void validate(ArgsName args) {
+        if (!Files.isDirectory(Path.of(args.get("d")))) {
+            throw new IllegalArgumentException("The specified argument is not a directory");
         }
-        if (!Files.exists(Paths.get(args.get(0)))) {
-            throw new IllegalArgumentException(String.format("This folder '%s' does not exist", args.get(0)));
+        if (!args.get("e").startsWith(".")) {
+            throw new IllegalArgumentException("Excluded extensions must start with \".\"");
         }
-        if (!args.get(1).startsWith(".")) {
-            throw new IllegalArgumentException(String.format("This extension '%s' uncorrected", args.get(1)));
+        if (!args.get("o").contains(".zip")) {
+            throw new IllegalArgumentException("The archive must have the \".zip\" extension");
         }
+        System.out.println("The input arguments are valid.");
     }
 
     public void packFiles(List<Path> source, File target) {
@@ -38,15 +39,15 @@ public class Zip {
     }
 
     public static void main(String[] args) throws IOException {
-        Zip zip = new Zip();
-        Map<String, String> arguments = ArgsName.of(args).values;
-        List<String> val = new ArrayList<>();
-        for (Map.Entry<String, String> e : arguments.entrySet()) {
-            val.add(e.getValue());
+        if (args.length != 3) {
+            throw new IllegalArgumentException("There should be 3 arguments");
         }
-        validate(val);
-        List<Path> files = Search.search(Paths.get(val.get(0)),
-                (e -> !e.toFile().getName().endsWith(val.get(1))));
-        zip.packFiles(files, Paths.get(val.get(2)).toFile());
+        ArgsName argsName = ArgsName.of(args);
+        validate(argsName);
+        List<Path> pathList = Search.search(Paths.get(argsName.get("d")), p -> !p.toString().contains(argsName.get("e")));
+        System.out.println("The list of files has been received");
+        Zip zip = new Zip();
+        zip.packFiles(pathList, new File(argsName.get("o")));
+        System.out.println("Archiving was carried out successfully");
     }
 }
