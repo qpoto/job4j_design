@@ -1,5 +1,9 @@
 package ru.job4j.io;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,43 +19,61 @@ public class ConsoleChat {
         this.botAnswers = botAnswers;
     }
 
+    @SuppressWarnings("checkstyle:WhitespaceAfter")
     public void run() {
         boolean run = true;
         boolean notSilent = true;
+        List<String> logPath = new ArrayList<>();
+        List<String> botAnswers = readPhrases();
         while (run) {
             Scanner cc = new Scanner(System.in);
-            String userSay = cc.nextLine();
-            if (userSay.equals(CONTINUE)) {
+            String userSay = cc.nextLine().toLowerCase();
+            logPath.add(userSay);
+            if (CONTINUE.equals(userSay)) {
                 System.out.println("БОТ: Отлично! Продолжаем диалог! Какой вопрос на этот раз? :-)");
                 notSilent = true;
+                continue;
             }
-            if (userSay.equals(STOP)) {
+            if (STOP.equals(userSay)) {
                 System.out.println("БОТ: Молчу - молчу...");
                 notSilent = false;
             }
-            if (userSay.equals(OUT)) {
+            if (OUT.equals(userSay)) {
                 System.out.println("БОТ: До новых встреч!");
                 run = false;
                 notSilent = false;
             }
             if (notSilent) {
-                String answer = "ОТВЕТ";
+                String answer = botAnswers.get((int) (Math.random() * botAnswers.size()));
                 System.out.println("БОТ: " + answer);
+                logPath.add(answer);
             }
         }
+        saveLog(logPath);
     }
 
     private List<String> readPhrases() {
-        return null;
+        try {
+            return Files.readAllLines(new File(botAnswers).toPath());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Что то не так с файлом ОТВЕТОВ");
+        }
     }
 
     private void saveLog(List<String> log) {
-
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, StandardCharsets.UTF_8)))) {
+            for (String s : log) {
+                out.println(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
         System.out.println("Добрый день! Давайте поговорим!");
-        ConsoleChat cc = new ConsoleChat("", "");
+        ConsoleChat cc = new ConsoleChat(args[0], args[1]);
         cc.run();
+        System.out.println("Запись диалога произведена в файл: " + args[0]);
     }
 }
