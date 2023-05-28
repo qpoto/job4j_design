@@ -28,25 +28,27 @@ public class ConsoleChat {
         while (run) {
             Scanner cc = new Scanner(System.in);
             String userSay = cc.nextLine().toLowerCase();
-            logPath.add(userSay);
+            logPath.add("Пользователь: " + userSay);
             if (CONTINUE.equals(userSay)) {
                 System.out.println("БОТ: Отлично! Продолжаем диалог! Какой вопрос на этот раз? :-)");
                 notSilent = true;
                 continue;
             }
-            if (STOP.equals(userSay)) {
+            if (STOP.equals(userSay) && notSilent) {
                 System.out.println("БОТ: Молчу - молчу...");
                 notSilent = false;
             }
             if (OUT.equals(userSay)) {
-                System.out.println("БОТ: До новых встреч!");
+                String botSayBye = "БОТ: До новых встреч!";
+                System.out.println(botSayBye);
                 run = false;
                 notSilent = false;
+                logPath.add(botSayBye);
             }
             if (notSilent) {
                 String answer = botAnswers.get((int) (Math.random() * botAnswers.size()));
                 System.out.println("БОТ: " + answer);
-                logPath.add(answer);
+                logPath.add("БОТ: " + answer);
             }
         }
         saveLog(logPath);
