@@ -19,7 +19,6 @@ public class ConsoleChat {
         this.botAnswers = botAnswers;
     }
 
-    @SuppressWarnings("checkstyle:WhitespaceAfter")
     public void run() {
         boolean run = true;
         boolean notSilent = true;
