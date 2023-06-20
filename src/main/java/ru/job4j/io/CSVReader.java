@@ -12,14 +12,11 @@ public class CSVReader {
     public static void handle(ArgsName argsName) throws Exception {
         Scanner scanner = new Scanner(new FileInputStream(argsName.get("path")))
                 .useDelimiter(argsName.get("delimiter"));
-        String[] firstLine = scanner.nextLine().split(argsName.get("delimiter"));
         String[] filters = argsName.get("filter").split(",");
-        List<String> column = new ArrayList<>();
         while (scanner.hasNext()) {
-            String clmn = scanner.next();
-            column.add(clmn);
+            String[] clmn = scanner.nextLine().split(argsName.get("delimiter"));
+            System.out.println(Arrays.toString(clmn));
         }
-        System.out.println();
     }
 
 
