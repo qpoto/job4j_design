@@ -13,9 +13,26 @@ public class CSVReader {
         Scanner scanner = new Scanner(new FileInputStream(argsName.get("path")))
                 .useDelimiter(argsName.get("delimiter"));
         String[] filters = argsName.get("filter").split(",");
-        while (scanner.hasNext()) {
-            String[] clmn = scanner.nextLine().split(argsName.get("delimiter"));
-            System.out.println(Arrays.toString(clmn));
+        String[] splitFilters = scanner.nextLine().split(argsName.get("delimiter"));
+        String[] finishFilter = new String[splitFilters.length];
+        for (int i = 0; i < splitFilters.length; i++) {
+            for (String filter : filters) {
+                if (splitFilters[i].equals(filter)) {
+                    finishFilter[i] = splitFilters[i];
+                    break;
+                } else {
+                    finishFilter[i] = "0";
+                }
+            }
+        }
+        while (scanner.hasNextLine()) {
+            String[] column = scanner.nextLine().split(argsName.get("delimiter"));
+            for (int i = 0; i < column.length; i++) {
+                if (!finishFilter[i].equals("0")) {
+                    System.out.print(column[i] + " ");
+                }
+            }
+            System.out.println();
         }
     }
 
