@@ -20,15 +20,13 @@ public class CSVReader {
                 if (splitFilters[i].equals(filter)) {
                     finishFilter[i] = splitFilters[i];
                     break;
-                } else {
-                    finishFilter[i] = "0";
                 }
             }
         }
         while (scanner.hasNextLine()) {
             String[] column = scanner.nextLine().split(argsName.get("delimiter"));
             for (int i = 0; i < column.length; i++) {
-                if (!finishFilter[i].equals("0")) {
+                if (finishFilter[i] != null) {
                     System.out.print(column[i] + " ");
                 }
             }
