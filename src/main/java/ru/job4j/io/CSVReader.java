@@ -23,10 +23,11 @@ public class CSVReader {
                     }
                 }
             }
+            StringBuilder firstLine = new StringBuilder();
             for (String filter : filters) {
-                System.out.print(filter + argsName.get("delimiter"));
+                firstLine.append(filter).append(argsName.get("delimiter"));
             }
-            System.out.println();
+            System.out.println(firstLine);
             while (scanner.hasNextLine()) {
                 String[] column = scanner.nextLine().split(argsName.get("delimiter"));
                 for (int i = 0; i < column.length; i++) {
