@@ -10,27 +10,34 @@ import java.util.*;
 
 public class CSVReader {
     public static void handle(ArgsName argsName) throws Exception {
-        Scanner scanner = new Scanner(new FileInputStream(argsName.get("path")))
-                .useDelimiter(argsName.get("delimiter"));
-        String[] filters = argsName.get("filter").split(",");
-        String[] splitFilters = scanner.nextLine().split(argsName.get("delimiter"));
-        String[] finishFilter = new String[splitFilters.length];
-        for (int i = 0; i < splitFilters.length; i++) {
-            for (String filter : filters) {
-                if (splitFilters[i].equals(filter)) {
-                    finishFilter[i] = splitFilters[i];
-                    break;
+        try (Scanner scanner = new Scanner(new FileInputStream(argsName.get("path")))
+                .useDelimiter(argsName.get("delimiter"))) {
+            String[] filters = argsName.get("filter").split(argsName.get("delimiter"));
+            String[] splitFilters = scanner.nextLine().split(argsName.get("delimiter"));
+            String[] finishFilter = new String[splitFilters.length];
+            for (int i = 0; i < filters.length; i++) {
+                for (int j = 0; j < splitFilters.length; j++) {
+                    if (filters[i].equals(splitFilters[j])) {
+                        finishFilter[i] = splitFilters[j];
+                        break;
+                    }
                 }
             }
-        }
-        while (scanner.hasNextLine()) {
-            String[] column = scanner.nextLine().split(argsName.get("delimiter"));
-            for (int i = 0; i < column.length; i++) {
-                if (finishFilter[i] != null) {
-                    System.out.print(column[i] + " ");
-                }
+            for (String filter : filters) {
+                System.out.print(filter + argsName.get("delimiter"));
             }
             System.out.println();
+            while (scanner.hasNextLine()) {
+                String[] column = scanner.nextLine().split(argsName.get("delimiter"));
+                for (int i = 0; i < column.length; i++) {
+                    if (finishFilter[i] != null) {
+                        int index = Arrays.asList(splitFilters).indexOf(finishFilter[i]);
+                        String print = column[index];
+                        System.out.print(print + argsName.get("delimiter"));
+                    }
+                }
+                System.out.println();
+            }
         }
     }
 
