@@ -12,7 +12,7 @@ public class CSVReader  {
     public static void handle(ArgsName argsName) throws Exception {
         try (Scanner scanner = new Scanner(new FileInputStream(argsName.get("path")))
                 .useDelimiter(argsName.get("delimiter"))) {
-            String[] filters = argsName.get("filter").split(argsName.get("delimiter"));
+            String[] filters = argsName.get("filter").split(",");
             String[] splitFilters = scanner.nextLine().split(argsName.get("delimiter"));
             String[] finishFilter = new String[splitFilters.length];
             for (int i = 0; i < filters.length; i++) {
@@ -23,22 +23,18 @@ public class CSVReader  {
                     }
                 }
             }
-            StringBuilder firstLine = new StringBuilder();
-            for (String filter : filters) {
-                firstLine.append(filter).append(argsName.get("delimiter"));
-            }
-            System.out.println(firstLine);
+            List<String> filteredCSV = new ArrayList<>(Arrays.asList(filters));
             while (scanner.hasNextLine()) {
                 String[] column = scanner.nextLine().split(argsName.get("delimiter"));
                 for (int i = 0; i < column.length; i++) {
                     if (finishFilter[i] != null) {
                         int index = Arrays.asList(splitFilters).indexOf(finishFilter[i]);
                         String print = column[index];
-                        System.out.print(print + argsName.get("delimiter"));
+                        filteredCSV.add(print);
                     }
                 }
-                System.out.println();
             }
+            System.out.println(filteredCSV);
         }
     }
 
