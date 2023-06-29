@@ -23,16 +23,19 @@ public class CSVReader  {
                     }
                 }
             }
-            List<String> filteredCSV = new ArrayList<>(Arrays.asList(filters));
+            List<String> filteredCSV = new ArrayList<>();
+            filteredCSV.add(argsName.get("filter"));
             while (scanner.hasNextLine()) {
                 String[] column = scanner.nextLine().split(argsName.get("delimiter"));
+                StringJoiner everyString = new StringJoiner(argsName.get("delimiter"));
                 for (int i = 0; i < column.length; i++) {
                     if (finishFilter[i] != null) {
                         int index = Arrays.asList(splitFilters).indexOf(finishFilter[i]);
                         String print = column[index];
-                        filteredCSV.add(print);
+                        everyString.add(print);
                     }
                 }
+                filteredCSV.add(everyString.toString());
             }
             System.out.println(filteredCSV);
         }
