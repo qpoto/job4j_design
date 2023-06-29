@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class CSVReader  {
+public class CSVReader {
     public static void handle(ArgsName argsName) throws Exception {
         try (Scanner scanner = new Scanner(new FileInputStream(argsName.get("path")))
                 .useDelimiter(argsName.get("delimiter"))) {
