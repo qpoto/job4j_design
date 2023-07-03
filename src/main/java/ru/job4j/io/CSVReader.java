@@ -37,12 +37,15 @@ public class CSVReader {
                 }
                 filteredCSV.add(everyString.toString());
             }
-            for (String line : filteredCSV) {
-                System.out.println(line);
-            }
+            printResult(filteredCSV);
         }
     }
 
+    private static void printResult(List<String> forPrint) {
+        for (String line : forPrint) {
+            System.out.println(line);
+        }
+    }
 
     private static void validateProgArgs(String[] myArgs) {
         if (myArgs.length != 4) {
