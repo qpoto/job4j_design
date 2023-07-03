@@ -24,7 +24,7 @@ public class CSVReader {
                 }
             }
             List<String> filteredCSV = new ArrayList<>();
-            filteredCSV.add(argsName.get("filter"));
+            filteredCSV.add(argsName.get("filter").replace(",", argsName.get("delimiter")));
             while (scanner.hasNextLine()) {
                 String[] column = scanner.nextLine().split(argsName.get("delimiter"));
                 StringJoiner everyString = new StringJoiner(argsName.get("delimiter"));
