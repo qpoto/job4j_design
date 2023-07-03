@@ -37,7 +37,9 @@ public class CSVReader {
                 }
                 filteredCSV.add(everyString.toString());
             }
-            System.out.println(filteredCSV);
+            for (String line : filteredCSV) {
+                System.out.println(line);
+            }
         }
     }
 
