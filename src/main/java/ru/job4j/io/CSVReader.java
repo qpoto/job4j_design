@@ -1,9 +1,6 @@
 package ru.job4j.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -16,9 +13,9 @@ public class CSVReader {
             String[] splitFilters = scanner.nextLine().split(argsName.get("delimiter"));
             String[] finishFilter = new String[splitFilters.length];
             for (int i = 0; i < filters.length; i++) {
-                for (int j = 0; j < splitFilters.length; j++) {
-                    if (filters[i].equals(splitFilters[j])) {
-                        finishFilter[i] = splitFilters[j];
+                for (String splitFilter : splitFilters) {
+                    if (filters[i].equals(splitFilter)) {
+                        finishFilter[i] = splitFilter;
                         break;
                     }
                 }
@@ -37,7 +34,11 @@ public class CSVReader {
                 }
                 filteredCSV.add(everyString.toString());
             }
-            printResult(filteredCSV);
+            if (argsName.get("out").equals("stdout")) {
+                printResult(filteredCSV);
+            } else {
+                printInFile(filteredCSV, argsName);
+            }
         }
     }
 
@@ -46,8 +47,15 @@ public class CSVReader {
             System.out.println(line);
         }
     }
+    private static void printInFile(List<String> forPrint, ArgsName argsName) throws IOException {
+        FileWriter writer = new FileWriter(argsName.get("out"));
+        for (String line : forPrint) {
+            writer.write(line + System.lineSeparator());
+        }
+        writer.close();
+    }
 
-    private static void validateProgArgs(String[] myArgs) {
+    private static void validateProgArgs(String[] myArgs, ArgsName argsName) {
         if (myArgs.length != 4) {
             throw new IllegalArgumentException("В программу должно быть передано 4 аргумента");
         }
@@ -56,8 +64,8 @@ public class CSVReader {
         }
     }
     public static void main(String[] args) throws Exception {
-        validateProgArgs(args);
         ArgsName argsName = ArgsName.of(args);
+        validateProgArgs(args, argsName);
         handle(argsName);
     }
 }
