@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class CSVReader  {
+public class CSVReader {
     public static void handle(ArgsName argsName) throws Exception {
         try (Scanner scanner = new Scanner(new FileInputStream(argsName.get("path")))
                 .useDelimiter(argsName.get("delimiter"))) {
@@ -65,7 +65,7 @@ public class CSVReader  {
         if (!(myArgs[1].endsWith(",") || myArgs[1].endsWith(";"))) {
             throw new IllegalArgumentException("Разделителем может быть запятая или точка с запятой");
         }
-        if (!(argsName.get("out").equals("stdout") || argsName.get("out").endsWith(".csv"))) {
+        if (!("stdout".equals(argsName.get("out")) || argsName.get("out").endsWith(".csv"))) {
             throw new IllegalArgumentException("Некорректно введены аргументы вывода результата");
         }
         if (argsName.get("filter").endsWith("=")) {
