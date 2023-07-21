@@ -20,7 +20,6 @@ public class EchoServer {
 
                     if (answer.contains("msg=What")) {
                         out.write("What".getBytes());
-                        server.close();
                     }
 
                     if (answer.contains("msg=Bye")) {
