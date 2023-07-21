@@ -34,7 +34,7 @@ public class CSVReader {
                 }
                 filteredCSV.add(everyString.toString());
             }
-            if (argsName.get("out").equals("stdout")) {
+            if ("stdout".equals(argsName.get("out"))) {
                 printResult(filteredCSV);
             } else {
                 printInFile(filteredCSV, argsName);
