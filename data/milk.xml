@@ -1,0 +1,8 @@
+<milk pasteurized="true" volume="1" name="Parmalat">
+    <farm name="Kozino" cowsQuantity="100"/>
+    <pfcs>
+        <pfc>3</pfc>
+        <pfc>3</pfc>
+        <pfc>5</pfc>
+    </pfcs>
+</milk>
