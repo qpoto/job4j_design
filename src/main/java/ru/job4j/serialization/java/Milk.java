@@ -1,5 +1,8 @@
 package ru.job4j.serialization.java;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.json.JSONObject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -10,8 +13,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import java.util.Arrays;
+
 @XmlRootElement
 public class Milk {
     @XmlAttribute
@@ -64,5 +67,12 @@ public class Milk {
             Milk result = (Milk) unmarshaller.unmarshal(reader);
             System.out.println(result);
         }
+        System.out.println("------------------------------");
+        Gson gson = new GsonBuilder().create();
+        String milkJson = gson.toJson(milk);
+        System.out.println(milkJson);
+        System.out.println("------------------------------");
+        JSONObject jsonMilk = new JSONObject(milkJson);
+        System.out.println(jsonMilk);
     }
 }

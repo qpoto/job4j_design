@@ -1,4 +1,4 @@
-package ru.job4j.io.serialization.xml;
+package ru.job4j.serialization.xml;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -28,6 +28,22 @@ public class Person {
         this.age = age;
         this.contact = contact;
         this.statuses = statuses;
+    }
+
+    public boolean isSex() {
+        return sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public String[] getStatuses() {
+        return statuses;
     }
 
     @Override

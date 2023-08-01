@@ -1,4 +1,4 @@
-package ru.job4j.io.serialization.xml;
+package ru.job4j.serialization.xml;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,6 +14,10 @@ public class Contact {
 
     public Contact(String phone) {
         this.phone = phone;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     @Override
