@@ -26,4 +26,12 @@ public class Farm {
                 + ", cowsQuantity=" + cowsQuantity
                 + '}';
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCowsQuantity() {
+        return cowsQuantity;
+    }
 }

@@ -51,6 +51,26 @@ public class Milk {
                 + '}';
     }
 
+    public boolean isPasteurized() {
+        return pasteurized;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Farm getFarm() {
+        return farm;
+    }
+
+    public int[] getPfc() {
+        return pfc;
+    }
+
     public static void main(String[] args) throws JAXBException, IOException {
         Milk milk = new Milk(true, 1, "Milk", new Farm("Kozino", 100), 3, 3, 3);
         JAXBContext context = JAXBContext.newInstance(Milk.class);
