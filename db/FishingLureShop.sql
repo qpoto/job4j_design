@@ -3,6 +3,7 @@ create table SoftLures(
     sort varchar(255)
 );
 
+
 insert into SoftLures(sort) values ('Силикон');
 insert into SoftLures(sort) values ('Стример');
 
