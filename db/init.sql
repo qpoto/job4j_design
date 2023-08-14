@@ -1,0 +1,1 @@
+create database Rights_schema_users_and_roles;
