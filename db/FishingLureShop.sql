@@ -1,27 +1,23 @@
-create table if not exists brand(
-    id serial primary key,
-    brand varchar(255)
+create table if not exists brands(
+	id serial primary key, 
+	name text
+);
+	
+create table if not exists lures(
+	id serial primary key, 
+	name text,
+	brand_id int references brands(id)
 );
 
-insert into Brand(brand) values ('HandMade');
-insert into Brand(brand) values ('Evergreen');
-
-create table if not exists softLures(
-    id serial primary key,
-    sort varchar(255)
+create table if not exists brand_lure(
+	id serial primary key, 
+	brand_id int references brands(id),
+	lures_id int references lures(id)
 );
 
-insert into SoftLures(sort) values ('Силикон');
-insert into SoftLures(sort) values ('Стример');
-
-create table if not exists softLures_brand(
-    id serial primary key,
-    sort_id int references softlures(id),
-	brand_id int references brand(id)
+create table if not exists brand_exсlure(
+	id serial primary key, 
+	brand_id int references brands(id) unique,
+	lures_id int references lures(id) unique
 );
-
-insert into softLures_brand(sort_id, brand_id) values (1000, 1);
-insert into softLures_brand(sort_id, brand_id) values (2, 2);
-
-select * from softLures_brand;
 
