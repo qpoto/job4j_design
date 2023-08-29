@@ -1,3 +1,3 @@
 select avg(price) as "Средняя цена устройства" from devices;
 select p.name as "Имя Владельца",  avg(d.price) as "Средняя цена устройства" from devices_people as dp join people as p on p.id=dp.people_id join devices as d on dp.device_id=d.id group by p.name;
-select p.name, having avg(d.price) > 5000 from devices_people as dp join people as p on p.id=dp.people_id join devices as d on dp.device_id=d.id group by p.name;
+select p.name from devices_people as dp join people as p on p.id=dp.people_id join devices as d on dp.device_id=d.id group by p.name having avg(d.price) > 100;
