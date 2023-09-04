@@ -1,4 +1,5 @@
-select 
+create view show_parts_all_cars 
+as select 
 c.name "Модель", cb.name "Кузов", ce.name "Тип двигателя (топлива)", ct.name "Тип коробки" 
 from car c 
 full join car_bodies cb 
@@ -28,3 +29,5 @@ from car_transmissions ct
 left join car c 
 on c.transmission_id = ct.id 
 where c.transmission_id is null;
+
+select * from show_parts_all_cars;

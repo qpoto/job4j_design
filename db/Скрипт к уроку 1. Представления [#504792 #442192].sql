@@ -1,0 +1,1 @@
+select * from show_parts_all_cars;
