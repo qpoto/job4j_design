@@ -1,7 +1,7 @@
 create table products (
     id serial primary key,
-    name varchar(50),
-    producer varchar(50),
+    name varchar(100),
+    producer varchar(100),
     count integer default 0,
     price integer
 );

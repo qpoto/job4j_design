@@ -15,6 +15,3 @@ create trigger trigger_statment_after_insert_tax_plus
     referencing new table as inserted
     for each statement
     execute procedure statment_after_insert_tax_plus();
-
-insert into products (name, producer, count, price) VALUES ('product_1', 'producer_1', 3, 50);
-select * from products;
