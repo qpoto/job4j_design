@@ -27,4 +27,4 @@ values (1, 100, 1),
        (2, 200, 2);
 
 
-select first_name Имя, last_name Фамилия from customers c join orders o on c.id = o.customer_id where c.id in (select customer_id from orders);
+select first_name Имя, last_name Фамилия from customers c left join orders o on c.id = o.customer_id where c.id not in (select customer_id from orders);
