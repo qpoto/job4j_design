@@ -10,11 +10,14 @@ public class TableEditor implements AutoCloseable {
 
     private Connection connection;
 
-    private Properties properties;
+    private final Properties properties;
+
+    private final Statement statement;
 
     public TableEditor(Properties properties) throws IOException, SQLException {
         this.properties = properties;
         initConnection();
+        this.statement = connection.createStatement();
     }
 
     private void initConnection() throws IOException, SQLException {
@@ -28,7 +31,7 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void createTable(String tableName) {
-        try (Statement statement = connection.createStatement()) {
+        try {
             String sql = String.format(
                     "CREATE TABLE IF NOT EXISTS %s(%s);",
                     tableName,
@@ -41,7 +44,7 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void dropTable(String tableName) {
-        try (Statement statement = connection.createStatement()) {
+        try {
             String sql = String.format(
                     "DROP TABLE %s;",
                     tableName
@@ -53,7 +56,7 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void addColumn(String tableName, String columnName, String type) {
-        try (Statement statement = connection.createStatement()) {
+        try {
             String sql = String.format(
                     "ALTER TABLE %s ADD %s %s;",
                     tableName,
@@ -67,7 +70,7 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void dropColumn(String tableName, String columnName) {
-        try (Statement statement = connection.createStatement()) {
+        try {
             String sql = String.format(
                     "ALTER TABLE %s ADD %s;",
                     tableName,
@@ -80,7 +83,7 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) {
-        try (Statement statement = connection.createStatement()) {
+        try {
             String sql = String.format(
                     "ALTER TABLE %s RENAME COLUMN %s TO %s;",
                     tableName,
