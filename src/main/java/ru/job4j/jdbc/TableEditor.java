@@ -2,7 +2,10 @@ package ru.job4j.jdbc;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 import java.util.StringJoiner;
 
@@ -33,9 +36,8 @@ public class TableEditor implements AutoCloseable {
     public void createTable(String tableName) {
         try {
             String sql = String.format(
-                    "CREATE TABLE IF NOT EXISTS %s(%s);",
-                    tableName,
-                    "id SERIAL PRIMARY KEY"
+                    "CREATE TABLE IF NOT EXISTS %s(id SERIAL PRIMARY KEY);",
+                    tableName
             );
             statement.execute(sql);
         } catch (SQLException e) {
