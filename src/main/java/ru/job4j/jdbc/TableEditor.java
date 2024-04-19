@@ -103,7 +103,8 @@ public class TableEditor implements AutoCloseable {
         var buffer = new StringJoiner(rowSeparator, rowSeparator, rowSeparator);
         buffer.add(header);
         try (var statement = connection.createStatement()) {
-            var selection = statement.executeQuery(String.format("SELECT * FROM %s LIMIT 1", tableName));
+            var selection = statement.executeQuery(String.format("SELECT * FROM %s LIMIT 1",
+                    tableName));
             var metaData = selection.getMetaData();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 buffer.add(String.format("%-15s|%-15s%n",
