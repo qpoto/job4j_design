@@ -28,9 +28,10 @@ public class ImportDB {
             reader.lines()
                     .forEach(s -> {
                         String[] userData = s.split(";");
-                        if (userData.length > 1) {
-                            users.add((new User(userData[0], userData[1])));
+                        if (userData.length < 2) {
+                            throw new IllegalArgumentException("Данные для сохранения в БД некорректны");
                         }
+                        users.add((new User(userData[0], userData[1])));
                     });
         }
         return users;
