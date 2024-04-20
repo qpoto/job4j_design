@@ -30,8 +30,6 @@ public class ImportDB {
                         String[] userData = s.split(";");
                         if (userData.length > 1) {
                             users.add((new User(userData[0], userData[1])));
-                        } else {
-                            throw new IllegalArgumentException("Данные не корректны");
                         }
                     });
         }
