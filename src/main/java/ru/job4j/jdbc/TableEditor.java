@@ -2,10 +2,7 @@ package ru.job4j.jdbc;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 import java.util.StringJoiner;
 
@@ -15,12 +12,9 @@ public class TableEditor implements AutoCloseable {
 
     private final Properties properties;
 
-    private final Statement statement;
-
     public TableEditor(Properties properties) throws IOException, SQLException {
         this.properties = properties;
         initConnection();
-        this.statement = connection.createStatement();
     }
 
     private void initConnection() throws IOException, SQLException {
@@ -33,25 +27,29 @@ public class TableEditor implements AutoCloseable {
         connection = DriverManager.getConnection(url, login, password);
     }
 
-    public void createTable(String tableName) {
-        try {
-            String sql = String.format(
-                    "CREATE TABLE IF NOT EXISTS %s(id SERIAL PRIMARY KEY);",
-                    tableName
-            );
-            statement.execute(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    private void processingRequest(String script) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(script);
         }
+    }
+
+    public void createTable(String tableName) throws SQLException {
+            String script = String.format(
+                    "CREATE TABLE IF NOT EXISTS %s (%s, %s);",
+                    tableName,
+                    "id SERIAL PRIMARY KEY",
+                    "name TEXT"
+            );
+            processingRequest(script);
     }
 
     public void dropTable(String tableName) {
         try {
-            String sql = String.format(
+            String script = String.format(
                     "DROP TABLE %s;",
                     tableName
             );
-            statement.execute(sql);
+            processingRequest(script);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -59,13 +57,13 @@ public class TableEditor implements AutoCloseable {
 
     public void addColumn(String tableName, String columnName, String type) {
         try {
-            String sql = String.format(
+            String script = String.format(
                     "ALTER TABLE %s ADD %s %s;",
                     tableName,
                     columnName,
                     type
             );
-            statement.execute(sql);
+            processingRequest(script);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -73,12 +71,12 @@ public class TableEditor implements AutoCloseable {
 
     public void dropColumn(String tableName, String columnName) {
         try {
-            String sql = String.format(
+            String script = String.format(
                     "ALTER TABLE %s ADD %s;",
                     tableName,
                     columnName
             );
-            statement.execute(sql);
+            processingRequest(script);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,13 +84,13 @@ public class TableEditor implements AutoCloseable {
 
     public void renameColumn(String tableName, String columnName, String newColumnName) {
         try {
-            String sql = String.format(
+            String script = String.format(
                     "ALTER TABLE %s RENAME COLUMN %s TO %s;",
                     tableName,
                     columnName,
                     newColumnName
             );
-            statement.execute(sql);
+            processingRequest(script);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -105,9 +103,8 @@ public class TableEditor implements AutoCloseable {
         var buffer = new StringJoiner(rowSeparator, rowSeparator, rowSeparator);
         buffer.add(header);
         try (var statement = connection.createStatement()) {
-            var selection = statement.executeQuery(String.format(
-                    "SELECT * FROM %s LIMIT 1", tableName
-            ));
+            var selection = statement.executeQuery(String.format("SELECT * FROM %s LIMIT 1",
+                    tableName));
             var metaData = selection.getMetaData();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 buffer.add(String.format("%-15s|%-15s%n",
@@ -123,10 +120,5 @@ public class TableEditor implements AutoCloseable {
         if (connection != null) {
             connection.close();
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        Properties properties = new Properties();
-        TableEditor tableEditor = new TableEditor(properties);
     }
 }
