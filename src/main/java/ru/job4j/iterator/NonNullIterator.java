@@ -1,9 +1,7 @@
 package ru.job4j.iterator;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class NonNullIterator implements Iterator<Integer> {
 
@@ -16,15 +14,10 @@ public class NonNullIterator implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        boolean haveNotnull = false;
-        for (int i = index; i < data.length; i++) {
-            if (data[i] != null) {
-                haveNotnull = true;
-                index = i;
-                break;
-            }
+        while (index < data.length && data[index] == null) {
+            index++;
         }
-        return index < data.length && haveNotnull;
+        return index < data.length;
     }
 
     @Override
